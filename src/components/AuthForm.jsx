@@ -2,11 +2,14 @@
 /* eslint-disable react/prop-types */
 import { Form, Input, message } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../apicalls/authApi";
+import { setUserId } from "../store/slices/userSlice";
 
 const AuthForm = ({ isLoginPage }) => {
   const [submitting, setSubmitting] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleOnFinish = async (values) => {
@@ -17,6 +20,7 @@ const AuthForm = ({ isLoginPage }) => {
         if (response.isSuccess) {
           message.success(response.message);
           localStorage.setItem("token", response.token);
+          dispatch(setUserId(response.token));
           navigate("/");
         } else {
           throw new Error(response.message);

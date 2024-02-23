@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/profile/index";
+import AuthProvider from "./providers/AuthProvider";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,7 +26,11 @@ function App() {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: (
+            <AuthProvider>
+              <Profile />
+            </AuthProvider>
+          ),
         },
       ],
     },
