@@ -2,11 +2,12 @@
 /* eslint-disable react/prop-types */
 import { Form, Input, message } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../apicalls/authApi";
 
 const AuthForm = ({ isLoginPage }) => {
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleOnFinish = async (values) => {
     setSubmitting(true);
@@ -16,6 +17,7 @@ const AuthForm = ({ isLoginPage }) => {
         if (response.isSuccess) {
           message.success(response.message);
           localStorage.setItem("token", response.token);
+          navigate("/");
         } else {
           throw new Error(response.message);
         }
@@ -27,6 +29,7 @@ const AuthForm = ({ isLoginPage }) => {
         const response = await registerUser(values);
         if (response.isSuccess) {
           message.success(response.message);
+          navigate("/login");
         } else {
           throw new Error(response.message);
         }
@@ -38,9 +41,9 @@ const AuthForm = ({ isLoginPage }) => {
   };
 
   return (
-    <section className="flex justify-center w-full mt-28">
+    <section className="flex justify-center w-full mt-5">
       <div className="px-8 md:px-0 w-[420px]">
-        <h1 className="pb-4 text-3xl font-bold text-blue-600">
+        <h1 className="pb-4 text-2xl font-bold text-blue-600 md:text-3xl">
           POINT.IO - {isLoginPage ? "LOGIN" : "REGISTER"}
         </h1>
         <Form layout="vertical" onFinish={handleOnFinish}>
