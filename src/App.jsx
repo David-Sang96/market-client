@@ -3,7 +3,7 @@ import Main from "./layouts/Main";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Profile from "./pages/profile/index";
+import Profile from "./pages/profile/HomeIndex";
 import AuthProvider from "./providers/AuthProvider";
 
 function App() {

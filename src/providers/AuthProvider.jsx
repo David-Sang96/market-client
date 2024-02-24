@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkCurrentUser } from "../apicalls/authApi";
+import { setUser } from "../store/slices/userSlice";
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCurrentUser();
@@ -15,7 +18,7 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await checkCurrentUser();
       if (response.isSuccess) {
-        //
+        dispatch(setUser(response.userDoc));
       } else {
         navigate("/");
         throw new Error(response.message);
