@@ -12,6 +12,7 @@ export const sellProduct = async (payload) => {
   }
 };
 
+//get product
 export const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get("/products", {
@@ -23,6 +24,7 @@ export const getAllProducts = async () => {
   }
 };
 
+//get old product
 export const getOldProduct = async (id) => {
   try {
     const response = await axiosInstance.get(`/products/${id}`);
@@ -32,6 +34,7 @@ export const getOldProduct = async (id) => {
   }
 };
 
+//update product
 export const updateProduct = async (payload) => {
   try {
     const response = await axiosInstance.put(`/update-product`, payload, {
@@ -43,9 +46,49 @@ export const updateProduct = async (payload) => {
   }
 };
 
+//delete product
 export const deleteProduct = async (id) => {
   try {
     const response = await axiosInstance.delete(`/product/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+//upload image
+export const uploadImage = async (formData) => {
+  try {
+    const response = await axiosInstance.post("/upload", formData, {
+      validateStatus: () => true,
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+//get saved product images
+export const getSavedImages = async (id) => {
+  try {
+    const response = await axiosInstance.get("/product-images/" + id);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+//delete saved product images
+export const deletedSavedProductImages = async (payload) => {
+  const { productId, imgToDelete } = payload;
+  const encodeImgToDelete = encodeURIComponent(imgToDelete);
+  try {
+    const response = await axiosInstance.delete(
+      `/products/images/destroy/${productId}/${encodeImgToDelete}`,
+      {
+        validateStatus: () => true,
+      }
+    );
     return response.data;
   } catch (error) {
     return error.message;

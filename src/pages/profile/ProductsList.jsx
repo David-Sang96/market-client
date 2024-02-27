@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { message } from "antd";
 import { format } from "date-fns";
@@ -83,6 +84,13 @@ const Products = ({
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-x-4">
+                        <button
+                          type="button"
+                          className="font-medium text-gray-600 hover:underline "
+                          onClick={() => handleEdit(product._id)}
+                        >
+                          Upload
+                        </button>
                         <button
                           type="button"
                           className="font-medium text-blue-600 hover:underline"
