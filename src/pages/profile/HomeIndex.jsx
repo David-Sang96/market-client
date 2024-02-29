@@ -10,6 +10,7 @@ const HomeIndex = () => {
   const [products, setProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editProductId, setEditProductId] = useState(null);
+  const [uploadTabKey, setUploadTabKey] = useState("1");
 
   const getProducts = async () => {
     try {
@@ -25,8 +26,12 @@ const HomeIndex = () => {
   };
 
   useEffect(() => {
+    if (activeTabKey === "1") {
+      setEditMode(false);
+      setEditProductId(null);
+    }
     getProducts();
-  }, []);
+  }, [activeTabKey]);
 
   const items = [
     {
@@ -39,6 +44,7 @@ const HomeIndex = () => {
           setEditMode={setEditMode}
           setEditProductId={setEditProductId}
           getProducts={getProducts}
+          setUploadTabKey={setUploadTabKey}
         />
       ),
     },
@@ -52,6 +58,7 @@ const HomeIndex = () => {
           setEditMode={setEditMode}
           editMode={editMode}
           editProductId={editProductId}
+          uploadTabKey={uploadTabKey}
         />
       ),
     },
@@ -63,11 +70,12 @@ const HomeIndex = () => {
     {
       key: "4",
       label: "General",
-      children: <General />,
+      children: (
+        <General setEditMode={setEditMode} activeTabKey={activeTabKey} />
+      ),
     },
   ];
   const handleOnChange = (key) => {
-    setEditMode(false);
     setActiveTabKey(key);
   };
 
@@ -78,6 +86,7 @@ const HomeIndex = () => {
       items={items}
       tabPosition="left"
       size="large"
+      className="min-h-screen"
     />
   );
 };

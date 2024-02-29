@@ -10,11 +10,18 @@ const Products = ({
   setEditMode,
   setEditProductId,
   getProducts,
+  setUploadTabKey,
 }) => {
   const handleEdit = (product_id) => {
     setEditMode(true);
     setActiveTabKey("2");
     setEditProductId(product_id);
+  };
+  const handleUpload = (product_id) => {
+    setEditMode(true);
+    setActiveTabKey("2");
+    setEditProductId(product_id);
+    setUploadTabKey("2");
   };
 
   const handleDelete = async (product_id) => {
@@ -72,22 +79,24 @@ const Products = ({
                       {format(new Date(product.createdAt), "dd-MM-yyyy")}
                     </td>{" "}
                     <td className="px-6 py-4">
-                      {product.status === "pending" ? (
-                        <span className="p-1 text-xs text-white bg-orange-400 rounded-md">
-                          {product.status}
-                        </span>
-                      ) : (
-                        <span className="p-1 text-xs text-white bg-green-400 rounded-md">
-                          {product.status}
-                        </span>
-                      )}
+                      <span
+                        className={`p-1 text-xs text-white  rounded-md ${
+                          product.status === "pending"
+                            ? " bg-orange-500"
+                            : product.status === "approve"
+                            ? "bg-green-500"
+                            : "bg-red-500"
+                        }`}
+                      >
+                        {product.status}
+                      </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-x-4">
                         <button
                           type="button"
                           className="font-medium text-gray-600 hover:underline "
-                          onClick={() => handleEdit(product._id)}
+                          onClick={() => handleUpload(product._id)}
                         >
                           Upload
                         </button>

@@ -27,3 +27,18 @@
 .fade-exit-active {
   transition: opacity 500ms;
 }
+
+.loading-icon {
+  color: white;
+  font-size: 1.6rem;
+  animation: animate 2s infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}

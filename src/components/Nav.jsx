@@ -14,9 +14,14 @@ const Nav = () => {
       </Link>
       {user ? (
         <div className="flex items-center gap-3 md:gap-6">
-          <Link to={"/profile"} className="flex items-center gap-1">
+          <Link
+            to={`${user.role === "user" ? "/profile" : "/admin"}`}
+            className="flex items-center gap-1"
+          >
             <FaUser className="text-md md:text-lg" />
-            <span className="text-sm md:text-base"> Profile</span>
+            <span className="text-sm md:text-base">
+              {user?.role === "user" ? "Profile" : "Admin Panel"}
+            </span>
           </Link>
         </div>
       ) : (

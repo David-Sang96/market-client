@@ -3,8 +3,10 @@
 import { Checkbox, Col, Form, Input, Row, Select, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
-import { TbCategoryPlus } from "react-icons/tb";
+import { TbCategoryPlus, TbFidgetSpinner } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 import { getOldProduct, sellProduct, updateProduct } from "../apicalls/product";
+import { setLoader } from "../store/slices/loaderSlice";
 
 const ProductForm = ({
   setActiveTabKey,
@@ -15,6 +17,8 @@ const ProductForm = ({
 }) => {
   const [form] = Form.useForm();
   const [sellerId, setSellerId] = useState(null);
+  const dispatch = useDispatch();
+  const { isProcessing } = useSelector((store) => store.reducer.loader);
 
   useEffect(() => {
     if (editMode) {
@@ -71,6 +75,7 @@ const ProductForm = ({
   ];
 
   const handleOnFinish = async (values) => {
+    dispatch(setLoader(true));
     try {
       const response = editMode
         ? await updateProduct({
@@ -91,6 +96,7 @@ const ProductForm = ({
     } catch (error) {
       message.error(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   const getOldProductData = async () => {
@@ -202,9 +208,21 @@ const ProductForm = ({
           <Checkbox.Group options={checkBoxOptions} defaultValue={[""]} />
         </Form.Item>
 
-        <button className="flex items-center gap-1 px-6 py-1 mx-auto my-2 text-lg font-medium text-white bg-blue-500 rounded-md">
-          <TbCategoryPlus />
-          {editMode ? "Update Product" : "sell Product"}
+        <button
+          className="flex items-center gap-1 px-6 py-1 mx-auto my-2 text-lg font-medium text-white bg-blue-500 rounded-md"
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <>
+              <TbFidgetSpinner className="loading-icon" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <TbCategoryPlus />
+              {editMode ? "Update Product" : "Sell Product"}
+            </>
+          )}
         </button>
       </Form>
     </section>

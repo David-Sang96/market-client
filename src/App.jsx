@@ -3,6 +3,7 @@ import Main from "./layouts/Main";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Admin from "./pages/admin/HomeIndex";
 import Profile from "./pages/profile/HomeIndex";
 import AuthProvider from "./providers/AuthProvider";
 
@@ -14,7 +15,11 @@ function App() {
       children: [
         {
           index: true,
-          element: <Home />,
+          element: (
+            <AuthProvider>
+              <Home />
+            </AuthProvider>
+          ),
         },
         {
           path: "/register",
@@ -29,6 +34,14 @@ function App() {
           element: (
             <AuthProvider>
               <Profile />
+            </AuthProvider>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            <AuthProvider>
+              <Admin />
             </AuthProvider>
           ),
         },

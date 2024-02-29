@@ -27,7 +27,9 @@ export const getAllProducts = async () => {
 //get old product
 export const getOldProduct = async (id) => {
   try {
-    const response = await axiosInstance.get(`/products/${id}`);
+    const response = await axiosInstance.get(`/products/${id}`, {
+      validateStatus: () => true,
+    });
     return response.data;
   } catch (error) {
     return error.message;
@@ -49,7 +51,9 @@ export const updateProduct = async (payload) => {
 //delete product
 export const deleteProduct = async (id) => {
   try {
-    const response = await axiosInstance.delete(`/product/${id}`);
+    const response = await axiosInstance.delete(`/product/${id}`, {
+      validateStatus: () => true,
+    });
     return response.data;
   } catch (error) {
     return error.message;
@@ -71,7 +75,9 @@ export const uploadImage = async (formData) => {
 //get saved product images
 export const getSavedImages = async (id) => {
   try {
-    const response = await axiosInstance.get("/product-images/" + id);
+    const response = await axiosInstance.get("/product-images/" + id, {
+      validateStatus: () => true,
+    });
     return response.data;
   } catch (error) {
     return error.message;

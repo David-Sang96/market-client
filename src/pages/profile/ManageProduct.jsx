@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Tabs } from "antd";
-import { useState } from "react";
 import ProductForm from "../../components/ProductForm";
 import Upload from "../../components/Upload";
 
@@ -10,9 +9,8 @@ const ManageProduct = ({
   editMode,
   editProductId,
   setEditMode,
+  uploadTabKey,
 }) => {
-  const [activeKey, setActiveKey] = useState("1");
-
   const items = [
     {
       key: "1",
@@ -34,23 +32,12 @@ const ManageProduct = ({
         <Upload
           editProductId={editProductId}
           setActiveTabKey={setActiveTabKey}
-          setActiveKey={setActiveKey}
         />
       ),
     },
   ];
-  const handleOnChange = (value) => {
-    setActiveKey(value);
-  };
 
-  return (
-    <Tabs
-      defaultActiveKey={activeKey}
-      onChange={(value) => handleOnChange(value)}
-      items={items}
-      tabPosition="top"
-    />
-  );
+  return <Tabs defaultActiveKey={uploadTabKey} items={items} />;
 };
 
 export default ManageProduct;

@@ -1,19 +1,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Form, Input, message } from "antd";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../apicalls/authApi";
+import { setLoader } from "../store/slices/loaderSlice";
 import { setUser } from "../store/slices/userSlice";
 
 const AuthForm = ({ isLoginPage }) => {
-  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isProcessing } = useSelector((store) => store.reducer.loader);
 
   const handleOnFinish = async (values) => {
-    setSubmitting(true);
+    dispatch(setLoader(true));
     if (isLoginPage) {
       try {
         const response = await loginUser(values);
@@ -41,7 +42,7 @@ const AuthForm = ({ isLoginPage }) => {
         message.error(err.message);
       }
     }
-    setSubmitting(false);
+    dispatch(setLoader(false));
   };
 
   return (
@@ -88,12 +89,21 @@ const AuthForm = ({ isLoginPage }) => {
           </Form.Item>
           <Form.Item>
             <button
-              className="w-full py-2 text-white bg-blue-600 rounded-md outline-none"
-              disabled={submitting}
+              className="w-full py-2 mx-auto text-white bg-blue-600 rounded-md outline-none"
+              disabled={isProcessing}
             >
-              {isLoginPage
-                ? `${submitting ? "Logging In..." : "Login"}`
-                : `${submitting ? "Registering..." : "Register"}`}
+              {isProcessing ? (
+                <div className="flex justify-center gap-1">
+                  <TbFidgetSpinner className="loading-icon" />
+                  <span className="text-white">
+                    {isLoginPage ? "Logging In..." : "Registering..."}
+                  </span>
+                </div>
+              ) : isLoginPage ? (
+                "Login"
+              ) : (
+                "Register"
+              )}
             </button>
           </Form.Item>
           {isLoginPage ? (

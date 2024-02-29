@@ -1,12 +1,9 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
 import { VscSignOut } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../store/slices/userSlice";
 
-const General = ({ setEditMode, activeTabKey }) => {
+const General = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, name, role } = useSelector((state) => state.reducer.user.user);
@@ -16,12 +13,6 @@ const General = ({ setEditMode, activeTabKey }) => {
     dispatch(setUser(null));
     navigate("/");
   };
-
-  useEffect(() => {
-    if (activeTabKey === "4") {
-      setEditMode(false);
-    }
-  }, [activeTabKey]);
 
   return (
     <section className="p-2">
