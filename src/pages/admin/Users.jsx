@@ -1,27 +1,14 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { message } from "antd";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { banUser, getAllUsers, unBanUser } from "../../apicalls/admin";
+import { useEffect } from "react";
+import { banUser, unBanUser } from "../../apicalls/admin";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
-
+const Users = ({ users, getUsers }) => {
   useEffect(() => {
     getUsers();
   }, []);
-
-  const getUsers = async () => {
-    try {
-      const response = await getAllUsers();
-      if (response.isSuccess) {
-        setUsers(response.userDocs);
-      } else {
-        throw new Error(response.message);
-      }
-    } catch (error) {
-      message.error(error.message);
-    }
-  };
 
   const responseProcess = async (methodName) => {
     try {
@@ -85,11 +72,11 @@ const Users = () => {
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">
                       <span
-                        className={`${
+                        className={` font-semibold ${
                           user.role === "admin"
                             ? "text-blue-600  italic "
-                            : "text-green-500 "
-                        }font-semibold`}
+                            : "text-green-500"
+                        } ${user.status === "ban" && "text-red-500"}`}
                       >
                         {user.role}
                       </span>
@@ -100,7 +87,7 @@ const Users = () => {
                           user.status === "active"
                             ? "text-black bg-green-400"
                             : "text-white bg-red-500"
-                        }`}
+                        } `}
                       >
                         {user.status}
                       </span>

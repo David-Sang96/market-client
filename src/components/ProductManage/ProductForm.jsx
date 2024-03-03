@@ -5,8 +5,12 @@ import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import { TbCategoryPlus, TbFidgetSpinner } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { getOldProduct, sellProduct, updateProduct } from "../apicalls/product";
-import { setLoader } from "../store/slices/loaderSlice";
+import {
+  getOldProduct,
+  sellProduct,
+  updateProduct,
+} from "../../apicalls/product";
+import { setLoader } from "../../store/slices/loaderSlice";
 
 const ProductForm = ({
   setActiveTabKey,
@@ -30,32 +34,32 @@ const ProductForm = ({
 
   const options = [
     {
-      value: "electronics",
-      label: "Electronics",
+      value: "electronics_and_devices",
+      label: "Electronics And Devices",
     },
     {
-      value: "clothing",
-      label: "Clothing",
+      value: "clothing_and_fashion",
+      label: "Clothing And Fashion",
     },
     {
-      value: "books",
-      label: "Books",
+      value: "books_and_poems",
+      label: "Books And Poems",
     },
     {
       value: "home_appliances",
       label: "Home Appliances",
     },
     {
-      value: "beauty",
+      value: "beauty_products",
       label: "Beauty Products",
     },
     {
-      value: "toys",
-      label: "Toys & Games",
+      value: "toys_and_games",
+      label: "Toys And Games",
     },
     {
-      value: "sports",
-      label: "Sports & Outdoors",
+      value: "sports_and_outdoors",
+      label: "Sports And Outdoors",
     },
   ];
 

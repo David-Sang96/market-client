@@ -9,8 +9,8 @@ import {
   deletedSavedProductImages,
   getSavedImages,
   uploadImage,
-} from "../apicalls/product";
-import { setLoader } from "../store/slices/loaderSlice";
+} from "../../apicalls/product";
+import { setLoader } from "../../store/slices/loaderSlice";
 
 const Upload = ({ editProductId, setActiveTabKey }) => {
   const [previewImages, setPreviewImages] = useState([]);

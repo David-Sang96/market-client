@@ -5,7 +5,7 @@ import Nav from "../components/Nav";
 const Main = () => {
   const location = useLocation();
   return (
-    <section className="container mx-auto ">
+    <section className="">
       <Nav />
       <SwitchTransition>
         <CSSTransition

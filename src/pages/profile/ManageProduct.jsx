@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Tabs } from "antd";
-import ProductForm from "../../components/ProductForm";
-import Upload from "../../components/Upload";
+import ProductForm from "../../components/ProductManage/ProductForm";
+import Upload from "../../components/ProductManage/Upload";
 
 const ManageProduct = ({
   setActiveTabKey,

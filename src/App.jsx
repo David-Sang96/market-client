@@ -17,7 +17,7 @@ function App() {
           index: true,
           element: (
             <AuthProvider>
-              <Home />
+              <Home />,
             </AuthProvider>
           ),
         },

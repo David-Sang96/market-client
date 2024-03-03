@@ -1,5 +1,9 @@
 import { Tabs, message } from "antd";
 import { useEffect, useState } from "react";
+import { FaLuggageCart } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
+import { LiaUserSolid } from "react-icons/lia";
+import { MdManageHistory } from "react-icons/md";
 import { getAllProducts } from "../../apicalls/product";
 import General from "./General";
 import ManageProduct from "./ManageProduct";
@@ -36,7 +40,13 @@ const HomeIndex = () => {
   const items = [
     {
       key: "1",
-      label: "Products",
+
+      label: (
+        <span className="flex items-center gap-3 text-base">
+          <FaLuggageCart />
+          Products
+        </span>
+      ),
       children: (
         <ProductsList
           products={products}
@@ -50,7 +60,12 @@ const HomeIndex = () => {
     },
     {
       key: "2",
-      label: "Manage Product",
+      label: (
+        <span className="flex items-center gap-3 text-base">
+          <MdManageHistory />
+          Manage Product
+        </span>
+      ),
       children: (
         <ManageProduct
           setActiveTabKey={setActiveTabKey}
@@ -64,12 +79,22 @@ const HomeIndex = () => {
     },
     {
       key: "3",
-      label: "Notification",
+      label: (
+        <span className="flex items-center gap-3 text-base">
+          <IoNotifications />
+          Notification
+        </span>
+      ),
       children: "Content of Tab Pane 2",
     },
     {
       key: "4",
-      label: "General",
+      label: (
+        <span className="flex items-center gap-3 text-base">
+          <LiaUserSolid />
+          Profile
+        </span>
+      ),
       children: (
         <General setEditMode={setEditMode} activeTabKey={activeTabKey} />
       ),

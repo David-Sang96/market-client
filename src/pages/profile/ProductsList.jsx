@@ -74,7 +74,9 @@ const Products = ({
                     >
                       {product.name}
                     </th>
-                    <td className="px-6 py-4">{product.category}</td>
+                    <td className="px-6 py-4">
+                      {product.category.replaceAll("_", " ")}
+                    </td>
                     <td className="px-6 py-4">
                       {format(new Date(product.createdAt), "dd-MM-yyyy")}
                     </td>{" "}

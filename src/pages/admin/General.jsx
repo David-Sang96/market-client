@@ -31,10 +31,10 @@ const General = () => {
       <div className="flex items-end justify-between mb-4">
         <button
           type="button"
-          className="flex items-center gap-2 px-3 py-2 font-medium text-white bg-blue-500 rounded-md "
+          className="flex items-center gap-2 px-3 py-2 text-white bg-blue-500 rounded-md "
           onClick={handleLogout}
         >
-          <VscSignOut /> logout
+          <VscSignOut className="text-xl" /> logout
         </button>
       </div>
     </section>

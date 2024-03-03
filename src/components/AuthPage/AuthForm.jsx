@@ -4,9 +4,9 @@ import { Form, Input, message } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, registerUser } from "../apicalls/authApi";
-import { setLoader } from "../store/slices/loaderSlice";
-import { setUser } from "../store/slices/userSlice";
+import { loginUser, registerUser } from "../../apicalls/authApi";
+import { setLoader } from "../../store/slices/loaderSlice";
+import { setUser } from "../../store/slices/userSlice";
 
 const AuthForm = ({ isLoginPage }) => {
   const dispatch = useDispatch();
@@ -48,8 +48,8 @@ const AuthForm = ({ isLoginPage }) => {
   return (
     <section className="flex justify-center w-full mt-5">
       <div className="px-8 md:px-0 w-[420px]">
-        <h1 className="pb-4 text-2xl font-bold text-blue-600 md:text-3xl">
-          POINT.IO - {isLoginPage ? "LOGIN" : "REGISTER"}
+        <h1 className="pb-4 text-2xl font-bold text-blue-500 md:text-3xl">
+          TradeHub.IO - {isLoginPage ? "Login" : "Register"}
         </h1>
         <Form layout="vertical" onFinish={handleOnFinish}>
           {isLoginPage || (
