@@ -1,8 +1,8 @@
 import { axiosInstance } from "./axiosInstance.js";
 
-const apiCallProcess = async (method, end_point) => {
+const apiCallProcess = async (method, route) => {
   try {
-    const response = await axiosInstance[method](end_point, {
+    const response = await axiosInstance[method](route, {
       validateStatus: () => true,
     });
     return response.data;

@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Main from "./layouts/Main";
+import Details from "./pages/Details";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -44,6 +45,10 @@ function App() {
               <Admin />
             </AuthProvider>
           ),
+        },
+        {
+          path: "/product/:id",
+          element: <Details />,
         },
       ],
     },

@@ -11,6 +11,7 @@ const Home = () => {
   const getProducts = async () => {
     try {
       const response = await getAllProducts();
+      console.log(response);
       if (response.isSuccess) {
         setProducts(response.productDocs);
       } else {
@@ -25,12 +26,11 @@ const Home = () => {
     getProducts();
   }, []);
 
-  console.log(products);
   return (
     <section>
-      <Hero />
-      <Filter />
-      <div className="grid max-w-4xl grid-cols-2 gap-3 mx-auto ">
+      <Hero setProducts={setProducts} getProducts={getProducts} />
+      <Filter setProducts={setProducts} getProducts={getProducts} />
+      <div className="grid max-w-4xl grid-cols-2 gap-3 mx-auto gap-y-6 ">
         {products.map((product) => (
           <Card product={product} key={product._id} />
         ))}

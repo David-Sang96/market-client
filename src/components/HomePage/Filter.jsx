@@ -1,10 +1,14 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { message } from "antd";
 import { useEffect, useState } from "react";
+import { getFilteredProducts } from "../../apicalls/public";
 
-const Filter = () => {
+const Filter = ({ setProducts, getProducts }) => {
   const [categories, setCategories] = useState([]);
   const [uniqueCategoryNames, setUniqueCategoryNames] = useState([]);
+  const [uniqueNames, setUniqueNames] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const capitalizeFirstLetter = (item) => {
     return item[0].toUpperCase() + item.slice(1);
@@ -36,11 +40,35 @@ const Filter = () => {
   }, []);
 
   useEffect(() => {
+    //get category names for UI
     const uniqueNames = Array.from(
       new Set(categories.map((item) => capitalizeEveryWord(item.category)))
     );
     setUniqueCategoryNames(uniqueNames);
+
+    // get category names for search api
+    const filterUnique = [...new Set(categories.map((item) => item.category))];
+    setUniqueNames(filterUnique);
   }, [categories]);
+
+  const handleCategory = async (i) => {
+    setSelectedCategory(i);
+    try {
+      const response = await getFilteredProducts("category", uniqueNames[i]);
+      if (response.isSuccess) {
+        setProducts(response.productDocs);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const handleClear = () => {
+    setSelectedCategory(null);
+    getProducts();
+  };
 
   return (
     <div className="flex flex-wrap items-center justify-center max-w-5xl gap-3 mx-auto my-8 ">
@@ -48,11 +76,22 @@ const Filter = () => {
         uniqueCategoryNames.map((category, index) => (
           <div
             key={index}
-            className="px-2 py-1 text-white bg-blue-500 rounded-xl"
+            className={`px-2 py-1 text-white bg-blue-500 cursor-pointer rounded-xl ${
+              index === selectedCategory && "bg-red-500"
+            }`}
+            onClick={() => handleCategory(index)}
           >
             <p>{category}</p>
           </div>
         ))}
+      {selectedCategory !== null && (
+        <button
+          className="px-2 py-1 text-white bg-blue-500 cursor-pointer rounded-xl "
+          onClick={handleClear}
+        >
+          Clear
+        </button>
+      )}
     </div>
   );
 };

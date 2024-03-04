@@ -1,87 +1,49 @@
 import { axiosInstance } from "./axiosInstance";
 
-//sell product
-export const sellProduct = async (payload) => {
+const apiCallingProcess = async (method, route, payload = null) => {
   try {
-    const response = await axiosInstance.post("/create-product", payload, {
+    const response = await axiosInstance[method](route, payload, {
       validateStatus: () => true,
     });
     return response.data;
   } catch (error) {
     return error.message;
   }
+};
+
+//sell product
+export const sellProduct = async (payload) => {
+  return apiCallingProcess("post", "/create-product", payload);
 };
 
 //get product
 export const getAllProducts = async () => {
-  try {
-    const response = await axiosInstance.get("/products", {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("get", "/products");
 };
 
 //get old product
 export const getOldProduct = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/products/${id}`, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("get", `/products/${id}`);
 };
 
 //update product
 export const updateProduct = async (payload) => {
-  try {
-    const response = await axiosInstance.put(`/update-product`, payload, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("put", "/update-product", payload);
 };
 
 //delete product
 export const deleteProduct = async (id) => {
-  try {
-    const response = await axiosInstance.delete(`/product/${id}`, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("delete", `/products/${id}`);
 };
 
 //upload image
 export const uploadImage = async (formData) => {
-  try {
-    const response = await axiosInstance.post("/upload", formData, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("post", "/upload", formData);
 };
 
 //get saved product images
 export const getSavedImages = async (id) => {
-  try {
-    const response = await axiosInstance.get("/product-images/" + id, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
+  return apiCallingProcess("get", `/product-images/${id}`);
 };
 
 //delete saved product images

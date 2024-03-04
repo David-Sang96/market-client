@@ -5,7 +5,7 @@ import Nav from "../components/Nav";
 const Main = () => {
   const location = useLocation();
   return (
-    <section className="">
+    <section className="max-w-[90%] mx-auto">
       <Nav />
       <SwitchTransition>
         <CSSTransition

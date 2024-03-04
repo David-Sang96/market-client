@@ -76,7 +76,7 @@ const Users = ({ users, getUsers }) => {
                           user.role === "admin"
                             ? "text-blue-600  italic "
                             : "text-green-500"
-                        } ${user.status === "ban" && "text-red-500"}`}
+                        } ${user.status === "banned" && "text-red-500"}`}
                       >
                         {user.role}
                       </span>
