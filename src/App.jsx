@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/admin/HomeIndex";
 import Profile from "./pages/profile/HomeIndex";
+import SavedProduct from "./pages/savedProducts";
 import AuthProvider from "./providers/AuthProvider";
 
 function App() {
@@ -49,6 +50,14 @@ function App() {
         {
           path: "/product/:id",
           element: <Details />,
+        },
+        {
+          path: "/saved-products",
+          element: (
+            <AuthProvider>
+              <SavedProduct />,
+            </AuthProvider>
+          ),
         },
       ],
     },

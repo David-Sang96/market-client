@@ -11,6 +11,10 @@
   font-family: "Poppins", sans-serif !important;
 }
 
+body {
+  background: #eefeff;
+}
+
 .fade-enter {
   opacity: 0;
 }

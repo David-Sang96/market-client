@@ -1,17 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { message } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../apicalls/public";
 import Card from "../components/HomePage/Card";
 import Filter from "../components/HomePage/Filter";
 import Hero from "../components/HomePage/Hero";
+import Loader from "../components/loader";
+import { setLoader } from "../store/slices/loaderSlice";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { isProcessing } = useSelector((store) => store.reducer.loader);
 
   const getProducts = async () => {
+    dispatch(setLoader(true));
     try {
       const response = await getAllProducts();
-      console.log(response);
       if (response.isSuccess) {
         setProducts(response.productDocs);
       } else {
@@ -20,6 +26,7 @@ const Home = () => {
     } catch (error) {
       message.error(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   useEffect(() => {
@@ -30,11 +37,15 @@ const Home = () => {
     <section>
       <Hero setProducts={setProducts} getProducts={getProducts} />
       <Filter setProducts={setProducts} getProducts={getProducts} />
-      <div className="grid max-w-4xl grid-cols-2 gap-3 mx-auto gap-y-6 ">
-        {products.map((product) => (
-          <Card product={product} key={product._id} />
-        ))}
-      </div>
+      {isProcessing ? (
+        <Loader />
+      ) : (
+        <div className="grid max-w-6xl grid-cols-3 gap-3 mx-auto ">
+          {products.map((product) => (
+            <Card product={product} key={product._id} />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

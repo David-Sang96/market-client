@@ -2,13 +2,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { message } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getFilteredProducts } from "../../apicalls/public";
+import { setLoader } from "../../store/slices/loaderSlice";
 
 const Filter = ({ setProducts, getProducts }) => {
   const [categories, setCategories] = useState([]);
   const [uniqueCategoryNames, setUniqueCategoryNames] = useState([]);
   const [uniqueNames, setUniqueNames] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const dispatch = useDispatch();
+  const { isProcessing } = useSelector((store) => store.reducer.loader);
 
   const capitalizeFirstLetter = (item) => {
     return item[0].toUpperCase() + item.slice(1);
@@ -53,6 +57,7 @@ const Filter = ({ setProducts, getProducts }) => {
 
   const handleCategory = async (i) => {
     setSelectedCategory(i);
+    dispatch(setLoader(true));
     try {
       const response = await getFilteredProducts("category", uniqueNames[i]);
       if (response.isSuccess) {
@@ -63,6 +68,7 @@ const Filter = ({ setProducts, getProducts }) => {
     } catch (error) {
       message.error(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   const handleClear = () => {

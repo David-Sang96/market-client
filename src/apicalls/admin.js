@@ -17,11 +17,29 @@ export const getAllProducts = async () => {
 };
 
 export const approveProduct = async (id) => {
-  return apiCallProcess("post", `/admin/product-approve/${id}`);
+  // return apiCallProcess("post", `/admin/product-approve/${id}`);
+  try {
+    const response = await axiosInstance.post(`/admin/product-approve/${id}`, {
+      validateStatus: () => true,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 export const rejectProduct = async (id) => {
-  return apiCallProcess("post", `/admin/product-reject/${id}`);
+  // return apiCallProcess("post", `/admin/product-reject/${id}`);
+  try {
+    const response = await axiosInstance.post(`/admin/product-reject/${id}`, {
+      validateStatus: () => true,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 export const rollBackProduct = async (id) => {
@@ -34,7 +52,15 @@ export const getAllUsers = async () => {
 };
 
 export const banUser = async (id) => {
-  return apiCallProcess("post", `/admin/user-ban/${id}`);
+  // return apiCallProcess("post", `/admin/user-ban/${id}`);
+  try {
+    const response = await axiosInstance.post(`/admin/user-ban/${id}`, {
+      validateStatus: () => true,
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 export const unBanUser = async (id) => {

@@ -1,4 +1,4 @@
-import { FaUser } from "react-icons/fa";
+import { FaBookmark, FaUser } from "react-icons/fa";
 import { MdOutlineAssignmentInd } from "react-icons/md";
 import { VscSignIn } from "react-icons/vsc";
 import { useSelector } from "react-redux";
@@ -19,6 +19,9 @@ const Nav = () => {
       </div>
       {user ? (
         <div className="flex items-center gap-3 md:gap-6">
+          <Link className="flex items-center gap-1" to={"/saved-products"}>
+            <FaBookmark className=" text-md md:text-xl" />
+          </Link>
           <Link
             to={`${user.role === "user" ? "/profile" : "/admin"}`}
             className="flex items-center gap-1"

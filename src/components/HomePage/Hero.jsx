@@ -2,15 +2,19 @@
 import { message } from "antd";
 import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { getFilteredProducts } from "../../apicalls/public";
+import { setLoader } from "../../store/slices/loaderSlice";
 
 const Hero = ({ setProducts, getProducts }) => {
   const [searchKey, setSearchKey] = useState("");
+  const dispatch = useDispatch();
 
   const handleSearch = async () => {
     if (searchKey === "") {
       return;
     }
+    dispatch(setLoader(true));
     try {
       const response = await getFilteredProducts("searchKey", searchKey);
       if (response.isSuccess) {
@@ -21,6 +25,7 @@ const Hero = ({ setProducts, getProducts }) => {
     } catch (error) {
       message.error(error.message);
     }
+    dispatch(setLoader(false));
   };
 
   const handleClear = () => {
