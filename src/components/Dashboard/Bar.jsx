@@ -16,7 +16,7 @@ const Bar = ({ products }) => {
   }));
 
   return (
-    <Card className="w-full mt-6">
+    <Card className="w-full my-6">
       <Title>Product Count By Categories</Title>
       <Flex className="mt-4">
         <Text>

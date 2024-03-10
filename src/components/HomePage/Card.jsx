@@ -1,22 +1,33 @@
 /* eslint-disable react/prop-types */
 import { message } from "antd";
+import { CiBookmark } from "react-icons/ci";
 import { FaBookmark } from "react-icons/fa";
 import { GoBookmarkSlashFill } from "react-icons/go";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { savedProducts, unSavedProduct } from "../../apicalls/product";
 import defaultImage from "../../image/trade.png";
 
-const Card = ({ product, saved = false, getProducts }) => {
+const Card = ({
+  product,
+  saved = false,
+  getSavedProducts,
+  allSavedProducts,
+  getHomeProducts,
+}) => {
+  const { user } = useSelector((store) => store.reducer.user);
+
   const handleSaveProduct = async (id) => {
     try {
       const response = await savedProducts(id);
       if (response.isSuccess) {
         message.success(response.message);
+        getHomeProducts();
       } else {
         throw new Error(response.message);
       }
     } catch (error) {
-      message.error(error.message);
+      message.error(error.message || "Product is already saved.");
     }
   };
 
@@ -25,7 +36,7 @@ const Card = ({ product, saved = false, getProducts }) => {
       const response = await unSavedProduct(id);
       if (response.isSuccess) {
         message.success(response.message);
-        getProducts();
+        getSavedProducts();
       } else {
         throw new Error(response.message);
       }
@@ -34,6 +45,9 @@ const Card = ({ product, saved = false, getProducts }) => {
     }
   };
 
+  const findAlreadySavedProducts = (id) => {
+    return allSavedProducts.find((p) => p.product_id._id === id);
+  };
   return (
     <section className="px-3 py-2 space-y-2 bg-white rounded-md shadow-lg">
       {product.images[0] ? (
@@ -58,18 +72,31 @@ const Card = ({ product, saved = false, getProducts }) => {
         <p className="px-2 py-1 my-1 text-sm text-white bg-blue-500 rounded-lg w-fit">
           {product.category.toUpperCase().replaceAll("_", " ")}
         </p>
-        {!saved ? (
-          <FaBookmark
-            className="text-xl text-blue-600 cursor-pointer"
-            title="save"
-            onClick={() => handleSaveProduct(product._id)}
-          />
-        ) : (
-          <GoBookmarkSlashFill
-            title="unsaved"
-            className="text-2xl text-blue-600 cursor-pointer"
-            onClick={() => handleUnSaveProduct(product._id)}
-          />
+        {user && (
+          <>
+            {!saved ? (
+              <>
+                {findAlreadySavedProducts(product._id) ? (
+                  <FaBookmark
+                    className="text-xl text-blue-600 cursor-pointer"
+                    onClick={() => message.warning("Product is already saved.")}
+                  />
+                ) : (
+                  <CiBookmark
+                    className="text-2xl text-blue-600 cursor-pointer"
+                    title="save"
+                    onClick={() => handleSaveProduct(product._id)}
+                  />
+                )}
+              </>
+            ) : (
+              <GoBookmarkSlashFill
+                title="unsaved"
+                className="text-2xl text-blue-600 cursor-pointer"
+                onClick={() => handleUnSaveProduct(product._id)}
+              />
+            )}
+          </>
         )}
       </div>
       <Link to={`/product/${product._id}`}>

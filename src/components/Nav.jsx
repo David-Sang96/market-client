@@ -1,14 +1,25 @@
+import { message } from "antd";
 import { FaBookmark, FaUser } from "react-icons/fa";
 import { MdOutlineAssignmentInd } from "react-icons/md";
-import { VscSignIn } from "react-icons/vsc";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { VscSignIn, VscSignOut } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setUser } from "../store/slices/userSlice";
 
 const Nav = () => {
   const { user } = useSelector((store) => store.reducer.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(setUser(null));
+    navigate("/");
+    message.success("logged out successfully.");
+  };
 
   return (
-    <nav className="flex items-center justify-between px-2 py-3 text-white bg-blue-500 md:p-4 rounded-b-md">
+    <nav className="flex items-center justify-between px-2 py-3 text-blue-500 md:p-4 rounded-b-md">
       <Link to={"/"} className="text-xl font-bold md:text-2xl">
         TRADEHUB
       </Link>
@@ -31,6 +42,13 @@ const Nav = () => {
               {user.role === "user" ? "Profile" : "Admin Panel"}
             </span>
           </Link>
+
+          <button
+            className="flex items-center gap-2 rounded-md "
+            onClick={handleLogout}
+          >
+            <VscSignOut className="text-xl" /> logout
+          </button>
         </div>
       ) : (
         <div className="flex items-center gap-3 md:gap-6 ">

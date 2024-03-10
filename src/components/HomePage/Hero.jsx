@@ -11,8 +11,8 @@ const Hero = ({ setProducts, getProducts }) => {
   const dispatch = useDispatch();
 
   const handleSearch = async () => {
-    if (searchKey === "") {
-      return;
+    if (searchKey.trim().length === 0) {
+      return message.error("SearchKey must have.");
     }
     dispatch(setLoader(true));
     try {
