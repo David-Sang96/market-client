@@ -2,7 +2,7 @@
 import { AreaChart, Card, Title } from "@tremor/react";
 import { format } from "date-fns";
 
-const AreaChartHero = ({ products }) => {
+const AreaChartHero = ({ productsForBar }) => {
   // get  date of  a week ago
   const currentDate = new Date();
   const dateOfOneWeekAgo = new Date().setDate(currentDate.getDate() - 7);
@@ -10,7 +10,7 @@ const AreaChartHero = ({ products }) => {
   const DailyProductSellRate = {};
 
   //calc products of a week
-  products.forEach((product) => {
+  productsForBar.forEach((product) => {
     const productSellDate = new Date(product.createdAt);
     const formattedDate = format(new Date(productSellDate), "MMM/dd");
     if (productSellDate <= currentDate && productSellDate > dateOfOneWeekAgo) {

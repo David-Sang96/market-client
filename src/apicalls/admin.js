@@ -12,8 +12,22 @@ const apiCallProcess = async (method, route) => {
 };
 
 //get all products
-export const getAllProducts = async () => {
-  return apiCallProcess("get", "/admin/products");
+export const getAllProducts = async (page, perPage) => {
+  return apiCallProcess(
+    "get",
+    `/admin/products?page=${page}&perPage=${perPage}`
+  );
+};
+
+export const getProductsForBar = async () => {
+  try {
+    const response = await axiosInstance.get("/admin/products-by-categories", {
+      validateStatus: () => true,
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 export const approveProduct = async (id) => {

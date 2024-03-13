@@ -12,8 +12,10 @@ const apiCallingProcess = async (route) => {
 };
 
 //get all products
-export const getAllProducts = async () => {
-  return apiCallingProcess("/api/products");
+export const getAllProducts = async (page, perPageProducts) => {
+  return apiCallingProcess(
+    `/api/products?page=${page}&perPageProducts=${perPageProducts}`
+  );
 };
 
 //get products by filters

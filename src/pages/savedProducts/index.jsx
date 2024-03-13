@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { message } from "antd";
 import { useEffect, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +24,7 @@ const SavedProduct = () => {
         throw new Error(response.message);
       }
     } catch (error) {
-      message.error(error.message);
+      console.error(error.message);
       setSavedProducts([]);
     }
     dispatch(setLoader(false));

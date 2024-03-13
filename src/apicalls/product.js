@@ -26,12 +26,15 @@ export const sellProduct = async (payload) => {
 };
 
 //get product
-export const getAllProducts = async () => {
+export const getAllProducts = async (page, perPage) => {
   // return apiCallingProcess("get", "/products");
   try {
-    const response = await axiosInstance.get("products", {
-      validateStatus: () => true,
-    });
+    const response = await axiosInstance.get(
+      `/products?page=${page}&perPage=${perPage}`,
+      {
+        validateStatus: () => true,
+      }
+    );
     return response.data;
   } catch (error) {
     return error.message;

@@ -34,8 +34,8 @@ const Users = ({ users, getUsers }) => {
   return (
     <section>
       <h2 className="py-3 text-3xl font-semibold">Users List</h2>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-center text-gray-500 rtl:text-right">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-7">
+        <table className="w-full text-sm text-center text-gray-500 bg-white rtl:text-right">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
               <th scope="col" className="px-6 py-3 text-left">

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { BarList, Bold, Card, Flex, Text, Title } from "@tremor/react";
 
-const Bar = ({ products }) => {
+const Bar = ({ productsForBar }) => {
   const categories = {};
-  products.forEach((product) => {
+  productsForBar.forEach((product) => {
     if (!categories[product.category]) {
       categories[product.category] = 0;
     }

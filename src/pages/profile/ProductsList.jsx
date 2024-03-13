@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { message } from "antd";
+import { Pagination, message } from "antd";
 import { format } from "date-fns";
 import { deleteProduct } from "../../apicalls/product";
 
@@ -11,6 +11,8 @@ const Products = ({
   setEditProductId,
   getProducts,
   setUploadTabKey,
+  currentPage,
+  totalPages,
 }) => {
   const handleEdit = (product_id) => {
     setEditMode(true);
@@ -38,11 +40,15 @@ const Products = ({
     }
   };
 
+  const handlePagination = (page, perPage) => {
+    getProducts(page, perPage);
+  };
+
   return (
     <section>
       <h2 className="py-3 text-3xl font-semibold">Products List</h2>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-center text-gray-500 rtl:text-right">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
+        <table className="w-full text-sm text-center text-gray-500 bg-white rtl:text-right">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
               <th scope="col" className="px-6 py-3 text-left">
@@ -126,6 +132,13 @@ const Products = ({
             )}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-end my-4">
+        <Pagination
+          defaultCurrent={currentPage}
+          total={totalPages * 10}
+          onChange={handlePagination}
+        />
       </div>
     </section>
   );

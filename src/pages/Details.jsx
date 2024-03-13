@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, message } from "antd";
+import { format, formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { IoMdArrowBack } from "react-icons/io";
+import { TbFidgetSpinner } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { createNewBid, getAllBids } from "../apicalls/bid";
+import { createNotification } from "../apicalls/notification";
 import { getProductById } from "../apicalls/public";
 import Loader from "../components/loader";
 import defaultImg from "../image/trade.png";
@@ -13,31 +17,79 @@ import { setLoader } from "../store/slices/loaderSlice";
 const Details = () => {
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  const [form] = Form.useForm();
   const params = useParams();
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((store) => store.reducer.loader);
   const { user } = useSelector((store) => store.reducer.user);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getProduct = async () => {
-      dispatch(setLoader(true));
-      try {
-        const response = await getProductById(params.id);
-        if (response.isSuccess) {
-          setProduct(response.productDoc);
-        } else {
-          throw new Error(response.message);
-        }
-      } catch (error) {
-        message.error(error.message);
-      } finally {
-        dispatch(setLoader(false));
+  const getProduct = async () => {
+    dispatch(setLoader(true));
+    try {
+      const response = await getProductById(params.id);
+      if (response.isSuccess) {
+        setProduct(response.productDoc);
+      } else {
+        throw new Error(response.message);
       }
-    };
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      dispatch(setLoader(false));
+    }
+  };
 
+  const getComments = async () => {
+    dispatch(setLoader(true));
+    try {
+      const response = await getAllBids(params.id);
+      if (response.isSuccess) {
+        setComments(response.bidDocs);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      dispatch(setLoader(false));
+    }
+  };
+
+  useEffect(() => {
     getProduct();
-  }, [params.id]);
+    getComments();
+  }, []);
+
+  const handleOnFinish = async (values) => {
+    setIsLoading(true);
+    values.product_id = product._id;
+    values.seller_id = product.seller._id;
+    values.buyer_id = user._id;
+    try {
+      const response = await createNewBid(values);
+      if (response.isSuccess) {
+        form.resetFields();
+        message.success(response.message);
+        getComments();
+        await createNotification({
+          title: "New comment",
+          message: `New comment is submitted in ${product.name} by ${user.name}`,
+          owner_id: product.seller._id,
+          product_id: product._id,
+          phone_number: values.phone,
+        });
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -46,7 +98,7 @@ const Details = () => {
           <Loader />
         </div>
       )}
-      <section className="flex pt-10 ">
+      <section className="flex py-10 ">
         {!isProcessing && (
           <>
             {product && product.images && product.images.length === 0 && (
@@ -151,7 +203,16 @@ const Details = () => {
                 </div>
               </div>
               <hr />
-              <h1 className="space-y-2 font-medium">Bids</h1>
+              {user && user._id !== product?.seller?._id && (
+                <h2 className="pt-3 space-y-2 font-medium">
+                  Place Your Comments
+                </h2>
+              )}
+              {!user && (
+                <h2 className="pt-3 space-y-2 font-medium">
+                  Place Your Comments
+                </h2>
+              )}
               {!user && (
                 <p className="font-medium text-red-500">
                   <Link to={"/login"} className="underline">
@@ -161,15 +222,12 @@ const Details = () => {
                   <Link to={"/register"} className="underline">
                     Register
                   </Link>{" "}
-                  to bid this product.
+                  to comment this product.
                 </p>
               )}
-              {user && (
-                <div className="mt-2">
-                  <Form
-                    onFinish={() => window.alert("commented")}
-                    layout="vertical"
-                  >
+              {user && user._id !== product?.seller?._id && (
+                <div className="my-4">
+                  <Form onFinish={handleOnFinish} layout="vertical">
                     <Form.Item
                       name="comment"
                       label="Comment"
@@ -196,8 +254,9 @@ const Details = () => {
                           message: "Please write your phone number.",
                         },
                         {
-                          min: 9,
-                          message: "phone must have at least 9 characters.",
+                          min: 6,
+                          message:
+                            "phone number must have at least 6 characters.",
                         },
                       ]}
                       hasFeedback
@@ -205,13 +264,52 @@ const Details = () => {
                       <Input placeholder="phone number ..." type="number" />
                     </Form.Item>
 
-                    <button className="flex items-center float-right gap-1 px-2 py-1 font-medium text-white bg-blue-500 rounded-md">
-                      <span>Submit</span>
-                      <BsFillSendFill className="text-md" />
-                    </button>
+                    <div className="flex justify-end">
+                      <button className="flex items-center gap-1 px-2 py-1 text-white bg-blue-500 rounded-md font-mediu">
+                        {isLoading ? (
+                          <>
+                            <TbFidgetSpinner className="loading-icon" />
+                            <span>Submit</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Submit</span>
+                            <BsFillSendFill className="text-md" />
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </Form>
                 </div>
               )}
+              <hr />
+              <h2 className="pt-4 space-y-2 text-xl font-medium">
+                Recent Comments
+              </h2>
+              {comments.length === 0 && (
+                <p className="py-2 text-red-500">
+                  No comment is submitted yet.
+                </p>
+              )}
+              {comments.map((item) => (
+                <div
+                  key={item._id}
+                  className="p-2 my-3 text-sm bg-gray-100 rounded-md shadow-lg"
+                >
+                  <div className="flex justify-between pb-2 font-medium">
+                    <p className="space-x-3">
+                      <span>{item.buyer_id.name}</span>
+                      <span className="text-xs text-gray-600">
+                        ( {formatDistanceToNow(new Date(item.createdAt))} ago )
+                      </span>
+                    </p>
+                    <p className="text-gray-600">
+                      {format(new Date(item.createdAt), "MMM-dd-yyyy")}
+                    </p>
+                  </div>
+                  <p>{item.comment}</p>
+                </div>
+              ))}
             </div>
           </>
         )}

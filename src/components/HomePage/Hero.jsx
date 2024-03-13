@@ -35,7 +35,7 @@ const Hero = ({ setProducts, getProducts }) => {
 
   return (
     <div className="space-y-5 text-center">
-      <h1 className="pt-10 text-3xl font-bold text-blue-600">
+      <h1 className="pt-10 text-5xl font-bold text-blue-600">
         "Discover, Connect, and Thrive with TradeHub."
       </h1>
       <p className="max-w-xl mx-auto text-lg font-medium text-gray-500">
